@@ -1,24 +1,14 @@
-# jcleira's Go Template
+# alerts
+alerts objective is to receive and aggregate trading alerts from different sources.
 
-This template provides a structure for a Go project.
+![alerts](https://i.imgur.com/xhI9Ukt.png)
 
-## Features:
-
-> Not defined yet
-
-
-## Test
-
+# Running tests
 ```bash
-make test
+make tests
 ```
 
-## Run
-
+# Running locally
 ```
 make run
 ```
-
-## License:
-
-This template is licensed under the MIT License. In essence, you have full permission to view, modify, and distribute the software. However, the software comes with no warranties.

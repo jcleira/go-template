@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  alerts:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    env_file:
+      - ~/.code.envs/alerts/dev.alerts.env
+    command: ["./alerts", "alerts"]
+    depends_on:
+      - postgres
+      - kafka
+      - apicurio
