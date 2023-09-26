@@ -9,6 +9,7 @@ import (
 	// This is needed to register the postgres driver with migrate.
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+
 	"github.com/kelseyhightower/envconfig"
 	"github.com/spf13/cobra"
 )
@@ -26,7 +27,7 @@ func MigrateCommand() *cobra.Command {
 // Settings define the configuration needed to run migrations.
 type Settings struct {
 	PostgresHost string `envconfig:"postgres_host"`
-	PostgresPort string `envconfig:"postgres_port", default:"5432"`
+	PostgresPort string `envconfig:"postgres_port" default:"5432"`
 	PostgresDB   string `envconfig:"postgres_db"`
 	PostgresUser string `envconfig:"postgres_user"`
 	PostgresPass string `envconfig:"postgres_password"`

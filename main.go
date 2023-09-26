@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/jcleira/alerts/cmd"
+	"github.com/jcleira/go-template/cmd"
 )
 
 func main() {
