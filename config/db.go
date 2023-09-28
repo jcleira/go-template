@@ -9,7 +9,7 @@ import (
 // DB holds the configuration for the database.
 type DB struct {
 	Host string `required:"true"`
-	Port int    `required:"true"`
+	Port int64  `required:"true"`
 	User string `required:"true"`
 	Pass string `required:"true"`
 	Name string `required:"true"`
