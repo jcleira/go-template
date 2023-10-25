@@ -13,6 +13,7 @@ import (
 	"golang.org/x/exp/slog"
 
 	"github.com/jcleira/go-template/config"
+	"github.com/jcleira/go-template/internal/infra/http/handlers"
 )
 
 var Web = &cobra.Command{
@@ -37,13 +38,17 @@ func RunWeb(_ *cobra.Command, _ []string) error {
 	}
 
 	// Open the database connection.
-	_, err := sqlx.Open("postgres", config.DB.URL())
+	db, err := sqlx.Open("postgres", config.DB.URL())
 	if err != nil {
 		slog.Error(err.Error())
 		return err
 	}
 
 	r := gin.Default()
+
+	statusHandler := handlers.NewStatusHandler(db)
+
+	r.GET("/healthz", statusHandler.Healthz)
 
 	server := &http.Server{
 		Addr:    ":8080",

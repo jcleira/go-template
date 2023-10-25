@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	DB DB
+	DB         DB
+	HTTPServer HTTPServer
 }
 
 func Get() (Config, error) {
