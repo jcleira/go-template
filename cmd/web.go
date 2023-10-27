@@ -8,12 +8,11 @@ import (
 	"syscall"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jcleira/go-template/config"
+	"github.com/jcleira/go-template/internal/infra/http/handlers"
 	"github.com/jmoiron/sqlx"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slog"
-
-	"github.com/jcleira/go-template/config"
-	"github.com/jcleira/go-template/internal/infra/http/handlers"
 )
 
 var Web = &cobra.Command{

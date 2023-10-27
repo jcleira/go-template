@@ -39,7 +39,7 @@ func (dbe dbEvent) toDomain() (aggregates.Event[any], error) {
 	}, nil
 }
 
-// dbAlertFromDomain converts an aggregates.Event to a dbEvent
+// dbAlertFromDomain converts an aggregates.Event to a dbEvent.
 func dbAlertFromDomain(event aggregates.Event[any]) (dbEvent, error) {
 	detailsBytes, err := json.Marshal(event.Details)
 	if err != nil {
@@ -56,7 +56,7 @@ func dbAlertFromDomain(event aggregates.Event[any]) (dbEvent, error) {
 // dbEvents is a slice of dbEvent.
 type dbEvents []dbEvent
 
-// toDomain converts a slice of dbEvent to a slice of aggregates.Event
+// toDomain converts a slice of dbEvent to a slice of aggregates.Event.
 func (dbes dbEvents) toDomain() ([]aggregates.Event[any], error) {
 	events := make([]aggregates.Event[any], len(dbes))
 	for i, dbe := range dbes {

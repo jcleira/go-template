@@ -1,0 +1,173 @@
+run:
+  # The default concurrency value is the number of available CPU.
+  concurrency: 8
+
+  # Timeout for analysis, e.g. 30s, 5m.
+  # Default: 1m
+  timeout: 10s
+
+  # Exit code when at least one issue was found.
+  # Default: 1
+  issues-exit-code: 1
+
+  # Include test files or not.
+  # Default: true
+  tests: true
+
+  # List of build tags, all linters use it.
+  # Default: [].
+  build-tags:
+
+  # Which dirs to skip: issues from them won't be reported.
+  skip-dirs:
+    - mocks
+
+  # Enables skipping of directories:
+  # - vendor$, third_party$, testdata$, examples$, Godeps$, builtin$
+  # Default: true
+  skip-dirs-use-default: false
+
+  # Which files to skip: they will be analyzed, but issues from them won't be reported.
+  # Default value is empty list,
+  skip-files:
+
+  # If set we pass it to "go list -mod={option}". From "go help modules":
+  # If invoked with -mod=readonly, the go command is disallowed from the implicit
+  # automatic updating of go.mod described above. Instead, it fails when any changes
+  # to go.mod are needed. This setting is most useful to check that go.mod does
+  # not need updates, such as in a continuous integration and testing system.
+  # If invoked with -mod=vendor, the go command assumes that the vendor
+  # directory holds the correct copies of dependencies and ignores
+  # the dependency descriptions in go.mod.
+  #
+  # Allowed values: readonly|vendor|mod
+  # By default, it isn't set.
+  modules-download-mode: readonly
+
+  # Allow multiple parallel golangci-lint instances running.
+  # If false (default) - golangci-lint acquires file lock on start.
+  allow-parallel-runners: false
+
+  # Define the Go version limit.
+  # Mainly related to generics support since go1.18.
+  # Default: use Go version from the go.mod file, fallback on the env var `GOVERSION`, fallback on 1.18
+  go: ''
+
+output:
+  # Format:  colored-line-number|line-number|json|colored-tab|tab|checkstyle|code-climate|junit-xml|github-actions|teamcity
+  # Default: colored-line-number
+  format: colored-line-number
+
+  # Print lines of code with issue.
+  # Default: true
+  print-issued-lines: false
+
+  # Print linter name in the end of issue text.
+  # Mandatory!
+  # Default: true
+  print-linter-name: true
+
+  # Make issues output unique by line.
+  # No, no skips, everything should be reported.
+  # Default: true
+  uniq-by-line: false
+
+  # Add a prefix to the output file references.
+  # To be honest no idea when this can be needed, maybe a multi-module setup?
+  path-prefix: ""
+
+  # Sort results by: filepath, line and column.
+  # Slightly easier to follow the results + getting deterministic output.
+  sort-results: true
+
+issues:
+  #  Disabling the default excludes, going for ALL linters,.
+  #  We could also use the default excludes, but keep some rules with `include`
+  exclude-use-default: false
+
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - gosec
+
+    # Run some linter only for test files by excluding its issues for everything else.
+    - path-except: _test\.go
+      linters:
+        - forbidigo
+
+    # Exclude known linters from partially hard-vendored code,
+    - path: internal/hmac/
+      text: "weak cryptographic primitive"
+      linters:
+        - gosec
+
+    # Exclude some `staticcheck` messages.
+    - linters:
+        - staticcheck
+      text: "SA9003:"
+
+    # Exclude `lll` issues for long lines with `go:generate`.
+    - linters:
+        - lll
+      source: "^//go:generate "
+
+  # If set to true exclude and exclude-rules regular expressions become case-sensitive.
+  # Default: false
+  exclude-case-sensitive: false
+
+  # Maximum issues count per one linter.
+  # Set to 0 to disable.
+  # Default: 50
+  max-issues-per-linter: 0
+
+  # Maximum count of issues with the same text.
+  # Set to 0 to disable.
+  # Default: 3
+  max-same-issues: 0
+
+  # Show only new issues: if there are unstaged changes or untracked files,
+  # only those changes are analyzed, else only changes in HEAD~ are analyzed.
+  #
+  # It's a super-useful option for integration of golangci-lint into existing
+  # large codebase.
+  #
+  # Default: false.
+  new: false
+
+  # Fix found issues (if it's supported by the linter).
+  fix: true
+
+linters:
+  # Let's start with ALL linters enabled
+  enable-all: true
+
+  disable:
+  # deprecated linters
+  - interfacer
+  - maligned
+  - deadcode
+  - golint
+  - scopelint
+  - structcheck
+  - varcheck
+  - nosnakecase
+  - exhaustivestruct
+  - ifshort
+
+  # depguard is disabled because we don't want to be that exhaustive on the
+  # dependencies we use.
+  - depguard
+
+linters-settings:
+  exhaustruct:
+    # List of regular expressions to match struct packages and names.
+    # If this list is empty, all structs are tested.
+    # Default: []
+    include:
+      - '.*\.Test'
+    # List of regular expressions to exclude struct packages and names from check.
+    # Default: []
+    exclude:
+      - 'cobra\.Command$'

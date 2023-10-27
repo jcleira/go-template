@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net"
 
 	"github.com/golang-migrate/migrate/v4"
 	// This is needed to register the postgres driver with migrate.
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-
 	"github.com/kelseyhightower/envconfig"
 	"github.com/spf13/cobra"
 )
@@ -27,7 +27,7 @@ func MigrateCommand() *cobra.Command {
 // Settings define the configuration needed to run migrations.
 type Settings struct {
 	PostgresHost string `envconfig:"postgres_host"`
-	PostgresPort string `envconfig:"postgres_port" default:"5432"`
+	PostgresPort string `default:"5432"                envconfig:"postgres_port"`
 	PostgresDB   string `envconfig:"postgres_db"`
 	PostgresUser string `envconfig:"postgres_user"`
 	PostgresPass string `envconfig:"postgres_password"`
@@ -41,9 +41,9 @@ func RunMigrations(_ *cobra.Command, _ []string) {
 	}
 
 	migrateClient, err := migrate.New("file://data/db/migrations",
-		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
 			settings.PostgresUser, settings.PostgresPass,
-			settings.PostgresHost, settings.PostgresPort,
+			net.JoinHostPort(settings.PostgresHost, settings.PostgresPort),
 			settings.PostgresDB),
 	)
 	if err != nil {

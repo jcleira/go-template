@@ -14,7 +14,7 @@ type CreatedEventDetails struct {
 }
 
 // Event is the main aggregate it will be used to create specific events
-// defined by the event type
+// defined by the event type.
 type Event[Details any] struct {
 	ID      string
 	Type    EventType

@@ -12,12 +12,10 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-
+	"github.com/jcleira/go-template/config"
 	"github.com/ory/dockertest"
 	"github.com/ory/dockertest/docker"
 	"github.com/stretchr/testify/require"
-
-	"github.com/jcleira/go-template/config"
 )
 
 const (
@@ -86,7 +84,8 @@ func createDockerResource(pool *dockertest.Pool) (*dockertest.Resource, error) {
 }
 
 func waitTillConnection(
-	pool *dockertest.Pool, resource *dockertest.Resource) (*sql.DB, error) {
+	pool *dockertest.Pool, resource *dockertest.Resource,
+) (*sql.DB, error) {
 	var db *sql.DB
 
 	// The host is different between CI and locally

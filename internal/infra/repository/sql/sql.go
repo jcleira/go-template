@@ -6,10 +6,9 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/jcleira/go-template/config"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-
-	"github.com/jcleira/go-template/config"
 )
 
 // New opens a connection to the database and returns a sqlx.DB.

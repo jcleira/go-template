@@ -7,7 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// StatusHandler is the handler for the status endpoint,
+// StatusHandler is the handler for the status endpoint,.
 type StatusHandler struct {
 	db *sqlx.DB
 }
